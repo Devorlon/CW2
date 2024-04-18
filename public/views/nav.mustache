@@ -1,0 +1,29 @@
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+	{{#user}}
+		<li class="nav-item">
+			<a class="nav-link" href="/messages">Messages</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="/create/listing">Create</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="/view/listings">View</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="/settings">Settings</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="/logout">Logout</a>
+		</li>
+	{{/user}}
+	{{^user}}
+		<li class="nav-item">
+			<a class="nav-link" href="/login">Login</a>
+		</li>
+	{{/user}}
+</ul>
+
+<form class="d-flex" role="search" action="/search" method="GET">
+	<input class="form-control me-2" type="search" name="q" placeholder="Search Listings" aria-label="Search">
+	<button class="btn btn-outline-success" type="submit">Search</button>
+</form>
