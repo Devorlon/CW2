@@ -1,0 +1,48 @@
+{{>head}}
+{{>header}}
+
+<div class="card" id="loginPage">
+	<div class="card-body">
+		<form action="/post/listing" method="POST" enctype="multipart/form-data">
+			<div class="card-group createListingCards">
+				<div class="card createListingCard">
+					<label for="picture0">
+						<img src="/images/img.svg" class="card-img-top addListingImg" id="previewImage0" alt="Standin Image">
+					</label>
+					<input type="file" id="picture0" name="images" style="display: none;" accept="image/*" onchange="previewFile(0)">
+				</div>
+				<div class="card createListingCard">
+					<label for="picture1">
+						<img src="/images/img.svg" class="card-img-top addListingImg" id="previewImage1" alt="Standin Image">
+					</label>
+					<input type="file" id="picture1" name="images" style="display: none;" accept="image/*" onchange="previewFile(1)">
+				</div>
+				<div class="card createListingCard">
+					<label for="picture2">
+						<img src="/images/img.svg" class="card-img-top addListingImg" id="previewImage2" alt="Standin Image">
+					</label>
+					<input type="file" id="picture2" name="images" style="display: none;" accept="image/*" onchange="previewFile(2)">
+				</div>
+			</div>
+			<div class="mb-3">
+				<input type="text" class="form-control" id="title" name="title" placeholder="Listing Title" required>
+			</div>
+			<div class="mb-3">
+				<input type="text" class="form-control" id="location" name="location" placeholder="Pickup Location" required>
+			</div>
+			<div class="mb-3">
+				<input type="date" class="form-control" id="expireDate" name="expireDate" placeholder="Perish Date" required>
+			</div>
+			<div class="mb-3">
+				<input type="number" class="form-control" id="amount" name="amount" placeholder="Amount" required>
+			</div>
+			<div class="mb-3">
+				<textarea class="form-control" id="description" name="description" placeholder="Listing Description" rows="3"></textarea>
+			</div>
+			<button type="submit" class="btn btn-primary btn-block">Create Listing</button>
+			<button type="submit" class="btn btn-primary btn-block">Preview Listing</button>
+		</form>
+	</div>
+</div>
+
+{{>footer}}

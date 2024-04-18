@@ -47,6 +47,5 @@ class UserDAO {
 	}
 } 
 
-const dao = new
-UserDAO();
+const dao = new UserDAO();
 module.exports = dao;

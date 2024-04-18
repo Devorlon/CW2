@@ -14,8 +14,31 @@
 	text-decoration: none;
 }
 
-.card img {
+.createListingCard {
 	width: 100%;
+	aspect-ratio: 1 / 1;
+	object-fit: cover;
+}
+
+.addListingImg {
+	scale: 50%;
+	aspect-ratio: 1 / 1;
+	object-fit: cover;
+	align-self: center;
+}
+
+.userListingImg {
+	scale: 100%;
+	aspect-ratio: 1 / 1;
+	object-fit: cover;
+	align-self: center;
+}
+
+.card-group > .card {
+	margin-bottom: var(--bs-card-group-margin);
+}
+
+.listingImg {
 	object-fit: cover;
 }
 
@@ -28,8 +51,14 @@
 	border: 0;
 }
 
+@media (width <= 575.98px) {
+	.createListingCards {
+		display: flex;
+	}
+}
+
 @media (width < 767.98px) {
-	.card img {
+	.listingImg {
 		height: 45vw;
 	}
 
@@ -39,7 +68,7 @@
 }
 
 @media (width >= 767.98px) {
-	.card img {
+	.listingImg {
 		height: 20vw;
 	}
 
@@ -49,7 +78,7 @@
 }
 
 @media (width >= 1199.98px) {
-	.card img {
+	.listingImg {
 		height: 15vw;
 	}
 }

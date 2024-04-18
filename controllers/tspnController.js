@@ -1,6 +1,5 @@
-const DB = require('../src/DB');
-const Product = require('../src/Product');
-const dao = require('../src/UserDAO');
+const UserDAO = require('../src/UserDAO');
+const ListingDAO = require('../src/ListingDAO');
 
 exports.landingPage = function (req, res) {
     res.render("index");
@@ -23,17 +22,17 @@ exports.postNewUser = function (req, res) {
 	const password = req.body.password;
 
 	if (!user || !password) {
-		res.status(401).send('no user or no password')
+		res.status(401).send('no user or password')
 		return;
 	}
 
-	dao.lookup(user, function(err, u) {
+	UserDAO.lookup(user, function(err, u) {
 		if (u) {
 			res.send(401, "User exists:", user);
 			return;
 		}
 
-		dao.create(user, password);
+		UserDAO.create(user, password);
 		console.log("Register user", user, "password", password);
 		res.redirect('/login');
 	})
@@ -61,12 +60,45 @@ exports.messages = function (req, res) {
 }
 
 exports.createListing = function (req, res) {
-	
+	res.render('createListing');
+}
+
+exports.postListing = function (req, res) {
+	const pictures = req.files.map(file => file.path.replace(/^public\//, ''));
+	const title = req.body.title;
+	const location = req.body.location;
+	const expireDate = req.body.expireDate;
+	const amount = req.body.amount;
+	const description = req.body.description;
+
+	console.log(pictures);
+
+	if (!title || !location) {
+		res.status(401).send('no title or location')
+		return;
+	}
+
+	ListingDAO.create(pictures, title, location, expireDate, amount, description);
+	console.log("Created listing", title);
+	res.redirect('/');
 }
 
 exports.showListings = function (req, res) {
-	
-}
+	ListingDAO.getAllListings().then(filteredListings => {
+		if (filteredListings.length === 0) {
+			res.status(401).send('No listing found');
+		} 
+		else {
+			console.log(filteredListings);
+			res.render('listing', { listings: filteredListings });
+		}
+	})
+	.catch(error => {
+		console.error('Error fetching listings:', error);
+		res.status(500).send('Error fetching listings');
+	});
+};
+
 
 exports.settings = function (req, res) {
 	

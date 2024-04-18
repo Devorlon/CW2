@@ -1,0 +1,26 @@
+{{>head}}
+{{>header}}
+
+<body>
+	<div id="indexCards">
+		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+			{{#listings}}
+				<div class="col">
+					<div class="card">
+						<img src="/{{picture0}}" class="card-img-top listingImg" alt="{{title}}">
+						<div class="card-body">
+							<h5 class="card-title">{{title}}</h5>
+							<p class="card-text">Location: {{location}}</p>
+							<p class="card-text">Expiry date: {{expireDate}}</p>
+							<p class="card-text">Amount: {{amount}}</p>
+							<p class="card-text">Description: {{description}}</p>
+						</div>
+					</div>
+				</div>
+			{{/listings}}
+		</div>
+	</div>
+</body>
+
+{{>footer}}
+

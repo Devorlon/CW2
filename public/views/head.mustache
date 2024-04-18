@@ -13,6 +13,35 @@
 
 	<!-- Local CSS -->
 	<link rel="stylesheet" type="text/css" href="../css/styles.css">
+
+	<script>
+		function previewFile(id) {
+			const preview = document.getElementById(`previewImage${id}`);
+			const fileInput = document.getElementById(`picture${id}`).files[0];
+			const reader = new FileReader();
+
+			reader.onloadend = function () {
+				preview.src = reader.result;
+				preview.style.transform = "scale(1)";
+			};
+
+			if (fileInput) {
+				if (fileInput.type.match('image.*')) {
+					reader.readAsDataURL(fileInput);
+				} 
+				else {
+					alert("Please select an image file.");
+					document.getElementById(`fileInput${id}`).value = '';
+					preview.src = "/images/img.svg";
+				}
+			} 
+			else {
+				preview.src = "/images/img.svg";
+			}
+
+			preview.classList.replace('addListingImg', 'userListingImg');
+		}
+	</script>
 </head>
 
 <div class="d-flex flex-column min-vh-100"> {{! Wrapper for bottom footer spacing }}
