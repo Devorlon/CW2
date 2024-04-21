@@ -36,6 +36,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Azure Login
+      uses: Azure/login@v2.1.0
+
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
