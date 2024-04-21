@@ -5,22 +5,48 @@
 	<div id="indexCards">
 		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
 			{{#listings}}
+				{{^messageInProgress}}
+					<div class="col">
+						<div class="card">
+							<img src="/{{picture0}}" class="card-img-top listingImg" alt="{{title}}">
+							<div class="card-body">
+								<h5 class="card-title">{{title}}</h5>
+								<p class="card-text">Location: {{location}}</p>
+								<p class="card-text">Expiry date: {{expireDate}}</p>
+								<p class="card-text">Amount: {{amount}}</p>
+								<p class="card-text">Description: {{description}}</p>
+								<div class="row">
+									{{^currentUser}}
+										<form class="listingRow" action="/post/chat" method="POST">
+												<input type="hidden" class="form-control" id="email" name="email" value="{{posterEmail}}" required>
+												<input type="hidden" class="form-control" id="listingID" name="listingID" value="{{_id}}" required>
+												<button type="submit" class="btn btn-primary btn-block">Start Messaging</button>
+										</form>
+									{{/currentUser}}
+									{{#currentUser}}
+										<form class="listingRow" action="/remove/listing" method="POST">
+												<input type="hidden" class="form-control" id="email" name="email" value="{{posterEmail}}" required>
+												<input type="hidden" class="form-control" id="listingID" name="listingID" value="{{_id}}" required>
+												<button type="submit" class="btn btn-danger btn-block">Delete</button>
+										</form>
+									{{/currentUser}}
+								</div>
+							</div>
+						</div>
+					</div>
+				{{/messageInProgress}}
+			{{/listings}}
+			{{^noActiveListings}}
 				<div class="col">
 					<div class="card">
-						<img src="/{{picture0}}" class="card-img-top listingImg" alt="{{title}}">
 						<div class="card-body">
-							<h5 class="card-title">{{title}}</h5>
-							<p class="card-text">Location: {{location}}</p>
-							<p class="card-text">Expiry date: {{expireDate}}</p>
-							<p class="card-text">Amount: {{amount}}</p>
-							<p class="card-text">Description: {{description}}</p>
+							<p class="card-text">No active listings, if you're looking for one check your messages.</p>
 						</div>
 					</div>
 				</div>
-			{{/listings}}
+			{{/noActiveListings}}
 		</div>
 	</div>
 </body>
 
 {{>footer}}
-

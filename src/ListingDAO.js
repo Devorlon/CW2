@@ -1,4 +1,5 @@
 const Datastore = require("gray-nedb");
+const UserDAO = require('../src/UserDAO');
 
 class ListingDAO { 
     constructor(dbFilePath) {
@@ -12,39 +13,82 @@ class ListingDAO {
 		}
 	}
 
-	create(pictures, title, location, expireDate, amount, description) {
-		const that = this;
-
-		var entry = { 
-			picture0: pictures[0],
-			picture1: pictures[1],
-			picture2: pictures[2],
-			title: title,
-			location: location,
-			expireDate: expireDate,
-			amount: amount,
-			description: description 
-		};
-
-		that.db.insert(entry, function (err) {
-			if (err) {
-				console.log("Can't insert listing:", title); 
-			}
+	create(pictures, title, location, expireDate, amount, description, email) {
+		return new Promise((resolve, reject) => {
+			const entry = { 
+				picture0: pictures[0],
+				picture1: pictures[1],
+				picture2: pictures[2],
+				title: title,
+				location: location,
+				expireDate: expireDate,
+				amount: amount,
+				description: description,
+				posterEmail: email
+			};
+	
+			this.db.insert(entry, (err, newDoc) => {
+				if (err) {
+					console.error("Can't insert listing:", title);
+					reject(err);
+					return;
+				}
+	
+				UserDAO.updateListing(newDoc._id, email).then(() => {
+					resolve(newDoc);
+				})
+				.catch((err) => {
+					reject(err);
+				});
+			});
 		});
 	}
 
-	lookup(title, cb) {
-		this.db.find({'title': title}, function (err, entries) { 
-			if (err) { 
-				return cb(null, null);
-			} 
-			else { 
-				if (entries.length == 0) { 
-					return cb(null, null);
+	delete(listingID) {
+		return new Promise((resolve, reject) => {
+			this.db.remove({ '_id': listingID }, {}, (err, numRemoved) => {
+				if (err) {
+					console.error("Error deleting listing:", err);
+					reject(err);
+				} 
+				else {
+					resolve(numRemoved);
 				}
+			});
+		});
+	}
 
-				return cb(null, entries[0]);
-			}
+	lookupTitle(title, posterEmail) {
+		return new Promise((resolve, reject) => {
+			this.db.find({ 'title': title, 'posterEmail': posterEmail }, (err, entries) => {
+				if (err) { 
+					reject(err);
+					return;
+				} 
+				if (entries.length === 0) { 
+					resolve(null);
+				} 
+				else {
+					resolve(entries);
+				}
+			});
+		});
+	}
+
+	lookupId(listingID) {
+		return new Promise((resolve, reject) => {
+			this.db.find({ '_id': listingID }, (err, entries) => {
+				if (err) { 
+					reject(err);
+					return;
+				} 
+				if (entries.length === 0) { 
+					resolve(null);
+				} 
+				else {
+					resolve(entries);
+				}
+			});
 		});
 	}
 
@@ -56,17 +100,9 @@ class ListingDAO {
 					reject(err);
 				} 
 				else {
-					console.log("Listings retrieved from database:", listings);
 					resolve(listings);
 				}
 			});
-		})
-		.then(listings => {
-			return listings;
-		})
-		.catch(error => {
-			console.error("Error:", error);
-			throw error;
 		});
 	}	
 } 

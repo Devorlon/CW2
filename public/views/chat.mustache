@@ -1,0 +1,63 @@
+{{>head}}
+{{>header}}
+
+<body>
+	<div id="indexCards">
+		<div class="row row-cols-1 g-4">
+			{{#chat}}
+				<div class="col">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">{{poster}}</h5>
+							<p class="card-text">{{message}}</p>
+							<p class="card-text">{{dateTime}}</p>
+						</div>
+					</div>
+				</div>
+			{{/chat}}
+			<div class="col">
+				<div class="card">
+					<div class="card-body">
+						{{#currentUser}}
+							<form id="form-/post/message/{{chatID}}" class="col-md-4 listingRow" action="/post/message/{{chatID}}" method="POST">
+								<textarea class="form-control mb-3" id="userMessage" name="userMessage" rows="3"></textarea>
+							</form>
+							<form id="form-/remove/chat" class="col-md-4 listingRow" action="/remove/chat" method="POST">
+								<input type="hidden" class="form-control" id="email" name="email" value="{{posterEmail}}" required>
+								<input type="hidden" class="form-control" id="chatID" name="chatID" value="{{chatID}}" required>
+							</form>
+							<form id="form-/remove/listing" class="col-md-4 listingRow" action="/remove/listing" method="POST">
+								<input type="hidden" class="form-control" id="email" name="email" value="{{posterEmail}}" required>
+								<input type="hidden" class="form-control" id="listingID" name="listingID" value="{{listingID}}" required>
+							</form>
+							<div class="row">
+								<div class="chatRow">
+									<button type="button" class="btn btn-primary btn-block" onclick="submitForm('/post/message/{{chatID}}')">Post Message</button>
+									<button type="button" class="btn btn-danger btn-block" onclick="submitForm('/remove/chat')">End Chat</button>
+									<button type="button" class="btn btn-success btn-block" onclick="submit2Forms('/remove/listing','/remove/chat')">Listing Done</button>
+								</div>
+							</div>
+						{{/currentUser}}
+						{{^currentUser}}
+							<form id="form-/post/message/{{chatID}}" class="col-md-4 listingRow" action="/post/message/{{chatID}}" method="POST">
+								<textarea class="form-control" id="userMessage" name="userMessage" rows="3"></textarea>
+							</form>
+							<form id="form-/remove/chat" class="col-md-4 listingRow" action="/remove/chat" method="POST">
+								<input type="hidden" class="form-control" id="email" name="email" value="{{posterEmail}}" required>
+								<input type="hidden" class="form-control" id="chatID" name="chatID" value="{{chatID}}" required>
+							</form>
+							<div class="row">
+								<div class="chatRow">
+									<button type="button" class="btn btn-primary btn-block" onclick="submitForm('/post/message/{{chatID}}')">Post Message</button>
+									<button type="button" class="btn btn-danger btn-block" onclick="submitForm('/remove/chat')">End Chat</button>
+								</div>
+							</div>
+						{{/currentUser}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+{{>footer}}

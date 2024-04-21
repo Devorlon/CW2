@@ -51,6 +51,16 @@
 	border: 0;
 }
 
+.listingRow {
+	width: auto;
+	max-width: none;
+	padding-right: 0%;
+}
+
+.chatRow {
+	margin-top: 0.5rem;
+}
+
 @media (width <= 575.98px) {
 	.createListingCards {
 		display: flex;

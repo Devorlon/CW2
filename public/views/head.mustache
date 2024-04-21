@@ -12,7 +12,7 @@
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
 	<!-- Local CSS -->
-	<link rel="stylesheet" type="text/css" href="../css/styles.css">
+	<link rel="stylesheet" type="text/css" href="/css/styles.css">
 
 	<script>
 		function previewFile(id) {
@@ -41,6 +41,43 @@
 
 			preview.classList.replace('addListingImg', 'userListingImg');
 		}
+
+		function submitForm(action) {
+			console.log("action", action);
+
+			var form = document.getElementById('form-' + action);
+
+			if (form) {
+				console.log("form", form)
+				form.submit();
+			} 
+			else {
+				console.error("Form with ID '" + 'form-' + action + "' not found.");
+			}
+		}
+
+		// VERY BAD. NEED TO REFACTOR
+		function submit2Forms(action1, action2) {
+			console.log("action1", action1);
+			console.log("action2", action2);
+
+			var form1 = document.getElementById('form-' + action1);
+			var form2 = document.getElementById('form-' + action2);
+
+			if (form1 && form2) {
+				console.log("form1", form1)
+				console.log("form2", form2)
+
+				form1.submit();
+				setTimeout(() => {
+					form2.submit();
+				}, 1000);
+			} 
+			else {
+				console.error("Form1 with ID '" + 'form-' + action1 + "' not found.");
+				console.error("Form2 with ID '" + 'form-' + action2 + "' not found.");
+			}
+	}
 	</script>
 </head>
 

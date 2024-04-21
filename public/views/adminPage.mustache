@@ -1,0 +1,42 @@
+{{>head}}
+{{>header}}
+
+<body>
+	<div id="indexCards">
+		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+			{{#entries}}
+				<div class="col">
+					<div class="card">
+						{{^noImg}}
+							<img src="/{{picture0}}" class="card-img-top listingImg" alt="{{title}}">
+						{{/noImg}}
+						<div class="card-body">
+							<h5 class="card-title">{{title}}</h5>
+							<p class="card-text">{{content}}</p>
+							<p class="card-text">{{posterEmail}}</p>
+							<p class="card-text">{{time}}</p>
+							<div class="row">
+								<form class="listingRow" action="/remove/{{entryType}}" method="POST">
+									<input type="hidden" class="form-control" id="email" name="email" value="{{posterEmail}}" required>
+									<input type="hidden" class="form-control" id="{{entryType}}ID" name="{{entryType}}ID" value="{{entryID}}" required>
+									<button type="submit" class="btn btn-danger btn-block">Delete</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			{{/entries}}
+			{{#noActiveListings}}
+				<div class="col">
+					<div class="card">
+						<div class="card-body">
+							<p class="card-text">Nothing found.</p>
+						</div>
+					</div>
+				</div>
+			{{/noActiveListings}}
+		</div>
+	</div>
+</body>
+
+{{>footer}}

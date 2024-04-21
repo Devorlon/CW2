@@ -10,21 +10,36 @@ const upload = multer({ dest: './public/listings/images/' });
 
 router.use(setLoginStatus);
 
-router.get('/', controller.landingPage);
+// Regular Pages
 router.get('/about', controller.about);
-router.get('/search', verify, controller.search);
-
-router.get('/messages', verify, controller.messages);
-router.get('/create/listing', verify, controller.createListing);
-router.get('/view/listings', controller.showListings);
-router.get('/settings', verify, controller.settings);
-
+router.get('/welcome', controller.welcome);
 router.get('/login', controller.showLogin);
 router.get("/logout", controller.logout);
-router.get('/registration', controller.showReg);
 
+// Auth Required Pages
+router.get('/', verify, controller.landingPage);
+router.get('/search', verify, controller.search);
+router.get('/admin', verify, controller.admin);
+router.get('/messages', verify, controller.showMessages);
+router.get('/listings', verify, controller.showListings);
+
+// Unique Catch-all Pages
+router.get('/view/chat/:chatID', verify, controller.showChat);
+router.get('/admin/:adminPage', verify, controller.adminPage);
+
+// Create Object Pages
+router.get('/registration', controller.showReg);
+router.get('/create/listing', verify, controller.createListing);
+
+// Recive Post Request
 router.post('/signin', login, controller.postLogin);
-router.post('/post/listing', upload.array('images', 3), controller.postListing);
+router.post('/post/listing', verify, upload.array('images', 3), controller.postListing);
+router.post('/post/chat', verify, controller.startChat);
+router.post('/post/message/:chatID', verify, controller.postMessage);
+router.post('/remove/listing', verify, controller.removeListing);
+router.post('/remove/chat', verify, controller.removeChat);
+router.post('/remove/message', verify, controller.removeMessage);
+router.post('/remove/user', verify, controller.removeUser);
 router.post('/register', controller.postNewUser);
 
 router.use(function(req, res) {

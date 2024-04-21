@@ -1,0 +1,25 @@
+{{>head}}
+{{>header}}
+
+<div id="indexCards">
+	<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+		{{#messages}}
+			<div class="col">
+				<div class="card">
+					{{^noImg}}
+						<a href="./view/chat/{{chatID}}">
+							<img src="/{{thumbnail}}" class="card-img-top listingImg" alt="{{listingTitle}}">
+						</a> 
+					{{/noImg}}
+					<div class="card-body">
+						<h5 class="card-title">{{listingTitle}}</h5>
+						<p class="card-text">{{lastMsgText}}</p>
+						<p class="card-text">{{lastMsgDate}}</p>
+					</div>
+				</div>
+			</div>
+		{{/messages}}
+	</div>
+</div>
+
+{{>footer}}
