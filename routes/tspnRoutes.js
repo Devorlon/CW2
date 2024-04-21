@@ -13,6 +13,7 @@ router.use(setLoginStatus);
 // Regular Pages
 router.get('/about', controller.about);
 router.get('/welcome', controller.welcome);
+router.get("/contact", controller.contact);
 router.get('/login', controller.showLogin);
 router.get("/logout", controller.logout);
 
@@ -35,10 +36,12 @@ router.get('/create/listing', verify, controller.createListing);
 router.post('/signin', login, controller.postLogin);
 router.post('/post/listing', verify, upload.array('images', 3), controller.postListing);
 router.post('/post/chat', verify, controller.startChat);
+router.post('/post/contact', controller.postContact);
 router.post('/post/message/:chatID', verify, controller.postMessage);
 router.post('/remove/listing', verify, controller.removeListing);
 router.post('/remove/chat', verify, controller.removeChat);
 router.post('/remove/message', verify, controller.removeMessage);
+router.post('/remove/contact', verify, controller.removeContact);
 router.post('/remove/user', verify, controller.removeUser);
 router.post('/register', controller.postNewUser);
 

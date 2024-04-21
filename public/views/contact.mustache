@@ -1,0 +1,21 @@
+{{>head}}
+{{>header}}
+
+<div class="card" id="loginPage">
+	<div class="card-body">
+		<form action="/post/contact" method="POST">
+			<div class="mb-3">
+				<input type="text" class="form-control" id="title" name="title" placeholder="Title" required>
+			</div>
+			<div class="mb-3">
+				<input type="text" class="form-control" id="email" name="email" placeholder="Email" value="{{email}}" required>
+			</div>
+			<div class="mb-3">
+				<textarea class="form-control" id="message" name="message" placeholder="" rows="3"></textarea>
+			</div>
+			<button type="submit" class="btn btn-primary btn-block">Send Message</button>
+		</form>
+	</div>
+</div>
+
+{{>footer}}
