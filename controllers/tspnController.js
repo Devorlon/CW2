@@ -1,3 +1,4 @@
+const ContactDAO = require('../src/ContactDAO');
 const UserDAO = require('../src/UserDAO');
 const ListingDAO = require('../src/ListingDAO');
 const MessageDAO = require('../src/MessageDAO');
@@ -8,6 +9,40 @@ exports.landingPage = function (req, res) {
 
 exports.welcome = function (req, res) {
 	res.render("welcome");
+}
+
+exports.contact = function (req, res) {
+	res.render("contact");
+}
+
+exports.postContact = function (req,res) {
+	const title = req.body.title;
+	const messageText = req.body.message;
+	const posterEmail = req.body.email;
+
+	if (!title || !posterEmail) {
+		throw new Error('no title or poster.');
+	}
+
+	ContactDAO.create(title, messageText, posterEmail).then(() => {
+		console.log("Message received", messageText);
+		res.redirect('/welcome');
+	});
+
+	res.redirect('/welcome');
+}
+
+exports.removeContact = function (req,res) {
+	const contactID = req.body.contactID
+
+	ContactDAO.delete(contactID).then(numRemoved => {
+		console.log("Message deleted. Number of messages removed:", numRemoved);
+	})
+	.catch(err => {
+		console.error("Error deleting message:", err);
+	});
+
+	res.redirect('/admin/contact');
 }
 
 exports.showLogin = function (req, res) {
@@ -391,8 +426,7 @@ exports.admin = function (req, res) {
 exports.adminPage = function (req, res) {
 	try {
 		if (res.locals.admin == true) {
-			const adminPage = req.params.adminPage; // Can be: messages, listings, accounts
-			let noActiveEntries = true;
+			const adminPage = req.params.adminPage; // Can be: messages, listings, accounts, contact
 
 			switch (adminPage) {
 				case "messages":
@@ -413,6 +447,9 @@ exports.adminPage = function (req, res) {
 									entryID: message._id								
 								});
 							});
+						}
+						else {
+							noActiveEntries = true;
 						}
 
 						res.render('adminPage', { entries: structuredMessages, noActiveEntries: noActiveEntries });
@@ -438,6 +475,9 @@ exports.adminPage = function (req, res) {
 								});
 							});
 						}
+						else {
+							noActiveEntries = true;
+						}
 
 						res.render('adminPage', { entries: structuredListings, noActiveEntries: noActiveEntries });
 					});
@@ -460,12 +500,40 @@ exports.adminPage = function (req, res) {
 								});
 							});
 						}
+						else {
+							noActiveEntries = true;
+						}
 
 						res.render('adminPage', { entries: structuredAccounts, noActiveEntries: noActiveEntries });
 					});
-					break;
+					break;				
+				case "contact":
+					let structuredContacts = [];
+
+					ContactDAO.getAllContacts().then((contacts) => {
+						if(contacts.length > 0) {
+							noActiveEntries = false;
+
+							contacts.forEach((contact) => {
+								structuredContacts.push({
+									noImg: true,
+									title: contact.title,
+									content: contact.message,
+									posterEmail: contact.email,
+									entryType: "contact",
+									entryID: contact._id
+								});
+							});
+						}
+						else {
+							console.log("No active entries");
+							noActiveEntries = true;
+						}
+
+						res.render('adminPage', { entries: structuredContacts, noActiveEntries: noActiveEntries });
+					});
 				default:
-					throw "Either something went wrong, or you're not meant to be here."
+					//throw "Either something went wrong, or you're not meant to be here."
 			}
 		}
 		else {
@@ -490,6 +558,7 @@ function initAccounts() {
 	UserDAO.create("Abigail", "Thom", "abby.thom@gmail.com", "fdsa");
 	UserDAO.create("Jack", "Eadie", "jack.eadie@gmail.com", "qwerty");
 	UserDAO.create("Admin", "Account", "admin@example.com", "admin");
+	ContactDAO.create("Test Message", "abby.thom@gmail.com", "This is a test message");
 
 	setTimeout(() => {
 		ListingDAO.create(["listings/images/6d961343b603d368504c5498a77fa682"], "Potateos", "Falkirk", "2024-05-12", 34, "Some potatoes I've grown in my lot.", "jack.eadie@gmail.com");
